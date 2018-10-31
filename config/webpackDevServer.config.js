@@ -82,17 +82,12 @@ module.exports = function(proxy, allowedHost) {
       disableDotRule: true,
     },
     public: allowedHost,
-    proxy: {
+    proxy : {
       '/api': {
-      target: 'https://www.goodreads.com',
-      pathRewrite: { '^/api': '' },
+      target: 'http://localhost:3001',
       changeOrigin: true,
       secure: false
       }
-    },
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods":"*"
     },
     before(app, server) {
       if (fs.existsSync(paths.proxySetup)) {

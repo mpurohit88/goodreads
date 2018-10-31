@@ -29,8 +29,9 @@ const styles = theme => ({
   },
 });
 
-function ComplexGrid(props) {
+function Tile(props) {
   const { classes, searchResult, index } = props;
+  
   return (
     <Paper className={classes.root} key={'id-' + index}>
       <Grid container spacing={16}>
@@ -55,8 +56,8 @@ function ComplexGrid(props) {
   );
 }
 
-ComplexGrid.propTypes = {
+Tile.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ComplexGrid);
+export default withStyles(styles)(Tile);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import ComplexGrid from './ComplexGrid';
+import Tile from './BookTile';
 import { get } from './httpClient';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -12,19 +12,11 @@ class App extends Component {
     this.state = {}
   }
 
-  componentDidMount() {
-    
-  }
-
   handleKeyPress = e => {
     if(e.charCode === 13){
       this.setState({isLoading: true});
-      get(e.target.value, this.callback);
+      get(e.target.value, this.callback).then(searchResult => this.setState({ posts: searchResult, isLoading: false}));
     }
-  }
-
-  callback = (searchResult) => {
-    this.setState({ posts: searchResult, isLoading: false});
   }
 
   render() {
@@ -35,15 +27,15 @@ class App extends Component {
           <InputLabel htmlFor="search">Provide Book Title and Press Enter (ex. react)</InputLabel>&nbsp;&nbsp;&nbsp;&nbsp;
           <Input type="text" name="search" id="search" onKeyPress={this.handleKeyPress} autoFocus />
           {
-            this.state.isLoading && "Loading..."
+            this.state.isLoading && <span id="loading">Loading...</span>
           }
           {
-            result === null ? "No Result Found" : "" 
+            result === null ? <span id="notFound">No Result Found</span> : "" 
           }
           {
             result && Array.isArray(result.work) ? result.work.map(function(searchResult, index) {
-              return <ComplexGrid searchResult={searchResult} index={index} />
-            }) : result && <ComplexGrid searchResult={result.work} index={1} />
+              return <Tile searchResult={searchResult} index={index} />
+            }) : result && <Tile searchResult={result.work} index={1} />
           }
         </div>
     ]

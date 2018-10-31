@@ -57,7 +57,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "debug": "node --debug-brk --inspect ./node_modules/jest/bin/jest -i"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -109,5 +110,10 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
+    "react-test-renderer": "^16.6.0"
   }
 }
