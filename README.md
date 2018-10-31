@@ -26,7 +26,7 @@ To run client project - ``` npm start ```
 
 To run server project - ``` npm start ./server ```
 
-- Publish App to heroku
+## Publish App to heroku
 
 As of now I created separate project to publish application
 
