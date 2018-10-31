@@ -32,5 +32,5 @@ As of now I created separate project to publish application
 
 ``` https://github.com/mpurohit88/goodreads-server.git ```
 
-With more time I would created jenkins pipeline to build at run time and move it to server project.
+With more time I would have been created jenkins pipeline to build static files at run time and move it to server project.
 Then publish server project to heroku with static build.
