@@ -37,4 +37,4 @@ Then publish server project to heroku with static build.
 
 ## Heroku Web Link
 
-``` https://goodreads-test.herokuapp.com/ ```
+[goodreads web link](https://goodreads-test.herokuapp.com)
