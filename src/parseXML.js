@@ -2,24 +2,24 @@ export const xmlToJson = function(xml, tab) {
     var X = {
       toObj: function(xml) {
          var o = {};
-         if (xml.nodeType==1) {   // element node ..
+         if (xml.nodeType===1) {   // element node ..
             if (xml.attributes.length)   // element with attributes  ..
-               for (var i=0; i<xml.attributes.length; i++)
+               for (let i=0; i<xml.attributes.length; i++)
                   o["@"+xml.attributes[i].nodeName] = (xml.attributes[i].nodeValue||"").toString();
             if (xml.firstChild) { // element has child nodes ..
-               var textChild=0, cdataChild=0, hasElementChild=false;
-               for (var n=xml.firstChild; n; n=n.nextSibling) {
-                  if (n.nodeType==1) hasElementChild = true;
-                  else if (n.nodeType==3 && n.nodeValue.match(/[^ \f\n\r\t\v]/)) textChild++; // non-whitespace text
-                  else if (n.nodeType==4) cdataChild++; // cdata section node
+               let textChild=0, cdataChild=0, hasElementChild=false;
+               for (let n=xml.firstChild; n; n=n.nextSibling) {
+                  if (n.nodeType===1) hasElementChild = true;
+                  else if (n.nodeType===3 && n.nodeValue.match(/[^ \f\n\r\t\v]/)) textChild++; // non-whitespace text
+                  else if (n.nodeType===4) cdataChild++; // cdata section node
                }
                if (hasElementChild) {
                   if (textChild < 2 && cdataChild < 2) { // structured element with evtl. a single text or/and cdata node ..
                      X.removeWhite(xml);
-                     for (var n=xml.firstChild; n; n=n.nextSibling) {
-                        if (n.nodeType == 3)  // text node
+                     for (let n=xml.firstChild; n; n=n.nextSibling) {
+                        if (n.nodeType === 3)  // text node
                            o["#text"] = X.escape(n.nodeValue);
-                        else if (n.nodeType == 4)  // cdata node
+                        else if (n.nodeType === 4)  // cdata node
                            o["#cdata"] = X.escape(n.nodeValue);
                         else if (o[n.nodeName]) {  // multiple occurence of element ..
                            if (o[n.nodeName] instanceof Array)
@@ -54,7 +54,7 @@ export const xmlToJson = function(xml, tab) {
             }
             if (!xml.attributes.length && !xml.firstChild) o = null;
          }
-         else if (xml.nodeType==9) { // document.node
+         else if (xml.nodeType===9) { // document.node
             o = X.toObj(xml.documentElement);
          }
          else
@@ -68,15 +68,15 @@ export const xmlToJson = function(xml, tab) {
                o[i] = X.toJson(o[i], "", ind+"\t");
             json += (name?":[":"[") + (o.length > 1 ? ("\n"+ind+"\t"+o.join(",\n"+ind+"\t")+"\n"+ind) : o.join("")) + "]";
          }
-         else if (o == null)
+         else if (o === null)
             json += (name&&":") + "null";
-         else if (typeof(o) == "object") {
+         else if (typeof(o) === "object") {
             var arr = [];
             for (var m in o)
                arr[arr.length] = X.toJson(o[m], m, ind+"\t");
             json += (name?":{":"{") + (arr.length > 1 ? ("\n"+ind+"\t"+arr.join(",\n"+ind+"\t")+"\n"+ind) : arr.join("")) + "}";
          }
-         else if (typeof(o) == "string")
+         else if (typeof(o) === "string")
             json += (name&&":") + "\"" + o.toString() + "\"";
          else
             json += (name&&":") + o.toString();
@@ -89,7 +89,7 @@ export const xmlToJson = function(xml, tab) {
          else {
             var asXml = function(n) {
                var s = "";
-               if (n.nodeType == 1) {
+               if (n.nodeType === 1) {
                   s += "<" + n.nodeName;
                   for (var i=0; i<n.attributes.length;i++)
                      s += " " + n.attributes[i].nodeName + "=\"" + (n.attributes[i].nodeValue||"").toString() + "\"";
@@ -102,9 +102,9 @@ export const xmlToJson = function(xml, tab) {
                   else
                      s += "/>";
                }
-               else if (n.nodeType == 3)
+               else if (n.nodeType === 3)
                   s += n.nodeValue;
-               else if (n.nodeType == 4)
+               else if (n.nodeType === 4)
                   s += "<![CDATA[" + n.nodeValue + "]]>";
                return s;
             };
@@ -122,7 +122,7 @@ export const xmlToJson = function(xml, tab) {
       removeWhite: function(e) {
          e.normalize();
          for (var n = e.firstChild; n; ) {
-            if (n.nodeType == 3) {  // text node
+            if (n.nodeType === 3) {  // text node
                if (!n.nodeValue.match(/[^ \f\n\r\t\v]/)) { // pure whitespace text node
                   var nxt = n.nextSibling;
                   e.removeChild(n);
@@ -131,7 +131,7 @@ export const xmlToJson = function(xml, tab) {
                else
                   n = n.nextSibling;
             }
-            else if (n.nodeType == 1) {  // element node
+            else if (n.nodeType === 1) {  // element node
                X.removeWhite(n);
                n = n.nextSibling;
             }
@@ -141,7 +141,7 @@ export const xmlToJson = function(xml, tab) {
          return e;
       }
    };
-   if (xml.nodeType == 9) // document node
+   if (xml.nodeType === 9) // document node
       xml = xml.documentElement;
    var json = X.toJson(X.toObj(X.removeWhite(xml)), xml.nodeName, "\t");
    return "{\n" + tab + (tab ? json.replace(/\t/g, tab) : json.replace(/\t|\n/g, "")) + "\n}";

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Tile from './BookTile';
-import { get } from './httpClient';
+import DialogBox from './DialogBox';
+import { get, getDetails } from './httpClient';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 
@@ -9,18 +10,32 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
+    this.state = {isShowDialogBox: false}
+  }
+
+  reset = () => {
+    this.setState({isShowDialogBox: false, bookDetail: undefined});
   }
 
   handleKeyPress = e => {
     if(e.charCode === 13){
       this.setState({isLoading: true});
-      get(e.target.value, this.callback).then(searchResult => this.setState({ posts: searchResult, isLoading: false}));
+      get(e.target.value).then(searchResult => this.setState({ posts: searchResult, isLoading: false}));
     }
   }
 
+  getBookDetails = id => {
+    this.setState({ isShowDialogBox: true})
+
+    getDetails(id).then(bookDetail => { 
+              this.setState({ bookDetail: bookDetail})
+            });
+  }
+
   render() {
+    const that = this;
     const result = this.state.posts ? this.state.posts.GoodreadsResponse.search.results : undefined;
+    const bookDetail = this.state.bookDetail ? this.state.bookDetail.GoodreadsResponse.book : undefined;
 
     return [
         <div className="App">
@@ -34,10 +49,11 @@ class App extends Component {
           }
           {
             result && Array.isArray(result.work) ? result.work.map(function(searchResult, index) {
-              return <Tile searchResult={searchResult} index={index} />
-            }) : result && <Tile searchResult={result.work} index={1} />
+              return <Tile searchResult={searchResult} getBookDetails={that.getBookDetails} index={index} />
+            }) : result && <Tile searchResult={result.work} getBookDetails={that.getBookDetails} index={1} />
           }
-        </div>
+        </div>,
+        this.state.isShowDialogBox ? <DialogBox bookDetail={bookDetail} reset={this.reset}/> : null
     ]
   }
 }

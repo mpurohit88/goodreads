@@ -11,15 +11,16 @@ const styles = theme => ({
     flexGrow: 1,
     maxWidth: 700,
     padding: theme.spacing.unit * 2,
-    'margin-top':25,
+    'margin-top':2,
     'margin-right':'auto',
     'margin-bottom':0,
     'margin-left':'auto',
-    'text-align': 'left'
+    'text-align': 'left',
+    cursor: 'pointer'
   },
   image: {
-    width: 128,
-    height: 128,
+    width: 100,
+    height: 100,
   },
   img: {
     margin: 'auto',
@@ -30,24 +31,22 @@ const styles = theme => ({
 });
 
 function Tile(props) {
-  const { classes, searchResult, index } = props;
+  const { classes, searchResult, getBookDetails, index } = props;
   
   return (
-    <Paper className={classes.root} key={'id-' + index}>
+    <Paper className={classes.root} key={'id-' + index} onClick={() => getBookDetails(searchResult.best_book.id["#text"])}>
       <Grid container spacing={16}>
         <Grid item>
           <ButtonBase className={classes.image}>
-            <img className={classes.img} alt="complex" src={searchResult.best_book.image_url} />
+            <img className={classes.img} alt="complex" src={searchResult.best_book.small_image_url} />
           </ButtonBase>
         </Grid>
         <Grid item xs={12} sm container>
           <Grid item xs container direction="column" spacing={16}>
             <Grid item xs>
-              <Typography gutterBottom variant="h4">
+              <Typography gutterBottom variant="h5">
                 {searchResult.best_book.title}
               </Typography>
-              <Typography gutterBottom variant="h5">by {searchResult.best_book.author.name}</Typography>
-              <Typography color="textSecondary">*****: {searchResult.average_rating} | Rating details | {searchResult.ratings_count["#text"]} Ratings | {searchResult.text_reviews_count["#text"]} Reviews</Typography>
             </Grid>
           </Grid>
         </Grid>
