@@ -34,3 +34,7 @@ As of now I created separate project to publish application
 
 With more time I would have been created jenkins pipeline to build static files at run time and move it to server project.
 Then publish server project to heroku with static build.
+
+## Heroku Web Link
+
+[goodreads web link](https://goodreads-test.herokuapp.com)
